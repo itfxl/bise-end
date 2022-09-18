@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itfxl.bise.mapper.Adminmapper">
+    <select id="adminlogin" resultType="com.itfxl.bise.bean.Admin">
+        select * from admin where account=#{account} and password=#{password}
+    </select>
+    <select id="userselect" resultType="com.itfxl.bise.bean.User">
+        select * from user
+        <where>
+            <if test="account != null and account !=''">
+                account = #{account}
+            </if>
+        </where>
+    </select>
+    <update id="updateuser">
+        update user
+        <set>
+            <if test="password != null and password != ''">
+                password = #{password}
+            </if>
+            <if test="username != null and username != ''">
+                username = #{username}
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone}
+            </if>
+        </set>
+        where account = #{account}
+    </update>
+    <delete id="deluser">
+        delete from user where id =#{id}
+    </delete>
+
+    <select id="houseselect" resultType="com.itfxl.bise.bean.Houseinforma" >
+        select * from houseinforma
+        <where>
+            <if test="hid!=null and hid!=''">
+                hid = #{hid} and
+            </if>
+            <if test="htime!=null and htime!=''">
+                htime = #{htime} and
+            </if>
+            <if test="price!=null and price!=''">
+                price = #{price} and
+            </if>
+            <if test="rtstatus!=null and rtstatus!=''">
+                rtstatus = #{rtstatus} and
+            </if>
+            <if test="hstatus!=null and hstatus!=''">
+                hstatus = #{hstatus} and
+            </if>
+            <if test="address!=null and address!=''">
+                address = #{address} and
+            </if>
+            <if test="account!=null and account!=''">
+                account = #{account}
+            </if>
+        </where>
+    </select>
+    <update id="updatehouse">
+        update houseinforma
+        <set>
+            <if test="address!=null and address!=''">
+                address = #{address},
+            </if>
+            <if test="price!=null and price!=''">
+                price = #{price},
+            </if>
+            <if test="htime!=null and htime!=''">
+                htime = #{htime},
+            </if>
+            <if test="hdescription!=null and hdescription!=''">
+                hdescription = #{hdescription},
+            </if>
+            <if test="rtstatus!=null and rtstatus!=''">
+                rtstatus = #{rtstatus},
+            </if>
+            <if test="hstatus!=null and hstatus!=''">
+                hstatus = #{hstatus},
+            </if>
+            <if test="imgurl!=null and imgurl!=''">
+                imgurl = #{imgurl}
+            </if>
+        </set>
+        where hid = #{hid}
+    </update>
+    <insert id="addhouse">
+        insert into houseinforma(address,price,hdescription,rtstatus,imgurl,account,phone)
+        value (#{address}, #{price},#{hdescription},#{rtstatus},#{imgurl},#{account},#{phone})
+    </insert>
+    <delete id="delhouse" parameterType="Integer">
+        delete from houseinforma where hid = #{hid}
+    </delete>
+
+    <select id="orderselect" resultType="com.itfxl.bise.bean.Houseinforma">
+        SELECT houseinforma.hid,houseinforma.address,houseinforma.price,houseinforma.hdescription,houseinforma.htime,
+        houseinforma.rtstatus,houseinforma.hstatus,houseinforma.imgurl,orders.account,houseinforma.phone,
+               orders.state, orders.evaluation, orders.id
+        from houseinforma join orders USING(hid)
+        <where>
+            <if test="account!=null and account!=''">
+                orders.account = #{account}
+            </if>
+        </where>
+    </select>
+    <delete id="delorder">
+        update orders set state = #{state} where hid = #{hid} and account = #{account}
+    </delete>
+
+    <select id="hstatusselect" resultType="com.itfxl.bise.bean.Houseinforma">
+        select * from houseinforma where hid = #{hid}
+    </select>
+    <update id="hstatusupdate">
+        update houseinforma
+        <set>
+            <if test="address!=null and address!=''">
+                address = #{address},
+            </if>
+            <if test="price!=null and price!=''">
+                price = #{price},
+            </if>
+            <if test="htime!=null and htime!=''">
+                htime = #{htime},
+            </if>
+            <if test="hdescription!=null and hdescription!=''">
+                hdescription = #{hdescription},
+            </if>
+            <if test="rtstatus!=null and rtstatus!=''">
+                rtstatus = #{rtstatus},
+            </if>
+            <if test="hstatus!=null and hstatus!=''">
+                hstatus = #{hstatus},
+            </if>
+            <if test="imgurl!=null and imgurl!=''">
+                imgurl = #{imgurl}
+            </if>
+        </set>
+        where hid = #{hid}
+    </update>
+
+</mapper>

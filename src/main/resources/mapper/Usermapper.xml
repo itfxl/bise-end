@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itfxl.bise.mapper.Usermapper">
+    <select id="userlogin" resultType="com.itfxl.bise.bean.User" >
+        select * from user
+        <where>
+            <if test="account!=null and account!=''">
+                account = #{account} and
+            </if>
+            <if test="password!=null and password!=''">
+                password = #{password}
+            </if>
+        </where>
+    </select>
+    <select id="zhuceselect" resultType="com.itfxl.bise.bean.User" >
+        select * from user where account = #{account}
+    </select>
+    <select id="seleorder" resultType="com.itfxl.bise.bean.Orders">
+        select * from orders where hid =#{hid} and account = #{account}
+    </select>
+    <update id="upshow">
+        update user
+        <set>
+            <if test="username!=null and username!=''">
+                username = #{username},
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone = #{phone},
+            </if>
+            <if test="password!=null and password!=''">
+                password = #{password},
+            </if>
+            <if test="imgurl!=null and imgurl!=''">
+                imgurl = #{imgurl},
+            </if>
+        </set>
+        where account = #{account}
+    </update>
+    <update id="zhucexiugai">
+        update user
+        <set>
+            <if test="password!=null and password!=''">
+                password = #{password},
+            </if>
+        </set>
+        where account = #{account}
+    </update>
+    <update id="uphouse">
+        update houseinforma
+         set   hstatus = "1"
+        where hid = #{hid}
+    </update>
+    <insert id="userzhuce">
+        insert into user(account,password)
+        value (#{account}, #{password})
+    </insert>
+    <insert id="addorder">
+        insert into orders(hid,account)
+        value (#{hid}, #{account})
+    </insert>
+    <insert id="addhousecated">
+        insert into housecated(address,account,phone,need)
+            value (#{address}, #{account}, #{phone}, #{need})
+    </insert>
+    <select id="selecthousecated" resultType="com.itfxl.bise.bean.Housecated" >
+        select housecated.phone,housecated.address,
+               housecated.need,housecated.id,housecated.account, user.imgurl
+        from housecated join user USING(account)
+        <where>
+            <if test="account!=null and account!=''">
+                housecated.account = #{account}
+            </if>
+        </where>
+    </select>
+    <delete id="delhousecated">
+        delete from housecated where id = #{id}
+    </delete>
+    <update id="uporder">
+        update user
+            <set>
+                <if test="evaluation!=null and evaluation!=''">
+                    evaluation = #{evaluation},
+                </if>
+                <if test="state!=null and state!=''">
+                    state = #{state},
+                </if>
+            </set>
+            where id = #{id}
+    </update>
+
+</mapper>
